@@ -3,20 +3,51 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
+import java.util.*;
 import javax.imageio.ImageIO;
 
 public class FiveChessFrame extends JFrame implements MouseListener {
+    private JPanel pan = new JPanel();  // 面板
+    private JButton undo = new JButton("悔棋");  // 悔棋
+    private JButton draw = new JButton("和棋");  // 和棋
+    private JButton concede = new JButton("认输");  // 认输
+    private JButton reopen = new JButton("重新开始");  // 重新开始
+    private JButton quit = new JButton("退出游戏");  // 退出游戏
     BufferedImage bgimg = null;  // 背景图片
     BufferedImage bgimgWhite = null;  // 白背景
+
     int x = -1;  // x、y坐标
     int y = -1;
+    Stack <Integer> allx = new Stack<Integer>(); // 所有棋子的x、y坐标
+    Stack <Integer> ally = new Stack<Integer>();
+    int chessCount = 0;  // 棋子数量
     // 19*19棋盘，多两行作为判断， 故后续代码中所有allChess都+1
     int[][] allChess = new int [21][21];  // 所以棋子，0无棋，1黑棋，2白棋
     boolean isBlack = true;  // 判断现在是黑棋还是白棋下
     boolean finish = false;  // 判断游戏是否结束
     String win = "";  // 哪方胜利
 
+
     public FiveChessFrame() throws IOException {
+        pan.setLayout(null);  // 自由布局
+        undo.setBounds(900,370,100,40);  // 设置各个按钮位置与大小
+        draw.setBounds(900,430,100,40);
+        concede.setBounds(900,480,100,40);
+        reopen.setBounds(900,520,100,40);
+        quit.setBounds(900,600,100,40);
+
+        undo.addActionListener(new ButtonPress());
+        draw.addActionListener(new ButtonPress());
+        concede.addActionListener(new ButtonPress());
+        reopen.addActionListener(new ButtonPress());
+        quit.addActionListener(new ButtonPress());
+
+        pan.add(undo);
+        pan.add(draw);
+        pan.add(concede);
+        pan.add(reopen);
+        pan.add(quit);
+
         this.setSize(1200, 820);  // 窗口大小
         this.setTitle("五子棋");  // 标题
         this.setLocationRelativeTo(null);  // 屏幕居中显示
@@ -35,10 +66,13 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         this.repaint();
     }
 
+    // 画
     public void paint(Graphics g2){
         // 双缓冲，防止屏幕闪烁
         BufferedImage bi = new BufferedImage(1200,820,BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
+
+        this.add(pan);
 
         // 画背景图片
         g.drawImage(bgimgWhite,0,20,this);
@@ -93,57 +127,69 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         g2.drawImage(bi,0,0,this);
     }
 
-
-
-    @Override
-    public void mouseClicked(MouseEvent e) {}
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-    @Override
-    public void mouseExited(MouseEvent e) {}
-
-    @Override  // 鼠标点击操作
-    public void mousePressed(MouseEvent e){
-        // 打印坐标
-        System.out.println("X->"+e.getX());
-        System.out.println("Y->"+e.getY());
-        System.out.println();
-        // 游戏未结束
-        if (finish == false){
-            // 获取点击位置坐标
-            x = e.getX();
-            y = e.getY();
-            float fx = x;
-            float fy = y;
-            if (x>=30 && x<= 770 && y>=50 && y<=790){
-                // 算出离他最近的交叉点
-                x = Math.round((fx-40)/40);
-                y = Math.round((fy-60)/40);
-                if (allChess[x+1][y+1]==0){  // 可以下子
-                    if (isBlack == true ) {
-                        allChess[x+1][y+1] = 1;  // 下黑子
-                        isBlack = false;
-                    } else if (isBlack == false ){
-                        allChess[x+1][y+1] = 2;  // 下白子
-                        isBlack = true;
-                    }
-                }
-
-                this.repaint();  // 画
-
-                // 判断是否胜利
-                boolean isWin = this.checkWin();
-                if (isWin == true){
-                    finish = true;
-                    win = (allChess[x+1][y+1]==1 ? "黑 黑 黑" : "白 白 白");
-                    JOptionPane.showMessageDialog(this,"游戏结束，" + win + "方获胜");
-                }
+    // 按钮事件
+    public class ButtonPress implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            Object obj = e.getSource();  // 按的哪个按钮
+            if(obj == undo) {
+                System.out.println("悔棋");
+                this.Undo();
+            } else if(obj == draw) {
+                System.out.println("求和");
+                this.Draw();
+            } else if(obj == concede) {
+                System.out.println("认输");
+                this.Concede();
+            } else if(obj == reopen) {
+                System.out.println("重新开始");
+                this.Reopen();
+            } else if (obj == quit){
+                System.exit(0);
             }
         }
 
+        private void Undo() {
+            // 如果没有棋子 或 游戏已经结束
+            if (chessCount==0 || finish == true){
+                return;
+            }
+            // 悔棋
+            int tmpx = allx.pop();
+            int tmpy = ally.pop();
+            chessCount--;
+            allChess[tmpx+1][tmpy+1]=0;
+            repaint();
+        }
+
+        private void Draw() {
+        }
+
+        private void Concede() {
+//            int res = JOptionPane.showConfirmDialog(f,"确定认输吗？");
+        }
+
+        private void Reopen() {
+            // 初始化allChess
+            for (int i = 0; i < 21; i++) {
+                for (int j = 0; j < 21; j++) {
+                    allChess[i][j] = 0;
+                }
+            }
+            // 清空allx、ally
+            allx.clear();
+            ally.clear();
+            // 初始化chessCount、x、y坐标、判断
+            chessCount = 0;
+            x = -1;
+            y = -1;
+            isBlack = true;
+            finish = false;
+            repaint();
+        }
     }
+
+
+
 
     // 判断是否有五子连珠
     private boolean checkWin(){
@@ -212,6 +258,62 @@ public class FiveChessFrame extends JFrame implements MouseListener {
             flag = true;
         }
         return flag;
+    }
+
+
+    @Override
+    public void mouseClicked(MouseEvent e) {}
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+    @Override
+    public void mouseExited(MouseEvent e) {}
+    @Override  // 鼠标点击操作
+    public void mousePressed(MouseEvent e){
+        // 打印坐标
+        System.out.println("X->"+e.getX());
+        System.out.println("Y->"+e.getY());
+        System.out.println();
+        // 游戏未结束
+        if (finish == false){
+            // 获取点击位置坐标
+            x = e.getX();
+            y = e.getY();
+            float fx = x;
+            float fy = y;
+            if (x>=30 && x<= 770 && y>=50 && y<=790){
+                // 算出离他最近的交叉点
+                x = Math.round((fx-40)/40);
+                y = Math.round((fy-60)/40);
+                if (allChess[x+1][y+1]==0){  // 可以下子
+                    allx.push(x);  // 棋子坐标入栈
+                    ally.push(y);
+                    chessCount++;  // 棋子总数+1
+                    if (isBlack == true ) {
+                        allChess[x+1][y+1] = 1;  // 下黑子
+                        isBlack = false;
+                    } else if (isBlack == false ){
+                        allChess[x+1][y+1] = 2;  // 下白子
+                        isBlack = true;
+                    }
+                }
+                if (chessCount == 361){
+                    finish = true;
+                    JOptionPane.showMessageDialog(this,"棋盘已下满，游戏结束！");
+                }
+                this.repaint();  // 画
+
+                // 判断是否胜利
+                boolean isWin = this.checkWin();
+                if (isWin == true){
+                    finish = true;
+                    win = (allChess[x+1][y+1]==1 ? "黑 黑 黑" : "白 白 白");
+                    JOptionPane.showMessageDialog(this,"游戏结束，" + win + "方获胜");
+                }
+            }
+        }
+
     }
 
 }
