@@ -1,15 +1,15 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.*;
-import javax.imageio.ImageIO;
+
 
 public class FiveChessFrame extends JFrame implements MouseListener {
     private JPanel pan = new JPanel();  // 面板
     private JButton undo = new JButton("悔棋");  // 悔棋
-    private JButton draw = new JButton("和棋");  // 和棋
     private JButton concede = new JButton("认输");  // 认输
     private JButton reopen = new JButton("重新开始");  // 重新开始
     private JButton quit = new JButton("退出游戏");  // 退出游戏
@@ -30,24 +30,30 @@ public class FiveChessFrame extends JFrame implements MouseListener {
 
     public FiveChessFrame() throws IOException {
         pan.setLayout(null);  // 自由布局
-        undo.setBounds(900,370,100,40);  // 设置各个按钮位置与大小
-        draw.setBounds(900,430,100,40);
-        concede.setBounds(900,480,100,40);
-        reopen.setBounds(900,520,100,40);
-        quit.setBounds(900,600,100,40);
-
+        // 按钮字体
+        Font buttonFont = new Font("黑体",Font.PLAIN,20);
+        undo.setFont(buttonFont);
+        concede.setFont(buttonFont);
+        reopen.setFont(buttonFont);
+        quit.setFont(buttonFont);
+        // 设置各个按钮位置与大小
+        undo.setBounds(888,351,140,70);
+        concede.setBounds(888,451,140,70);
+        reopen.setBounds(888,551,140,70);
+        quit.setBounds(888,651,140,70);
+        // 设置按钮事件
         undo.addActionListener(new ButtonPress());
-        draw.addActionListener(new ButtonPress());
         concede.addActionListener(new ButtonPress());
         reopen.addActionListener(new ButtonPress());
         quit.addActionListener(new ButtonPress());
-
+        // 按钮加入panel
         pan.add(undo);
-        pan.add(draw);
         pan.add(concede);
         pan.add(reopen);
         pan.add(quit);
+        pan.setVisible(true);
 
+        this.add(pan);
         this.setSize(1200, 820);  // 窗口大小
         this.setTitle("五子棋");  // 标题
         this.setLocationRelativeTo(null);  // 屏幕居中显示
@@ -66,17 +72,26 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         this.repaint();
     }
 
+
     // 画
     public void paint(Graphics g2){
         // 双缓冲，防止屏幕闪烁
         BufferedImage bi = new BufferedImage(1200,820,BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
 
-        this.add(pan);
-
         // 画背景图片
         g.drawImage(bgimgWhite,0,20,this);
         g.drawImage(bgimg,0,20,this);
+
+        // 使按钮显示
+//        undo.requestFocus();
+//        concede.requestFocus();
+//        reopen.requestFocus();
+//        quit.requestFocus();
+        undo.repaint();
+        concede.repaint();
+        reopen.repaint();
+        quit.repaint();
 
         // 打印提示信息
         g.setColor(Color.black);
@@ -120,12 +135,12 @@ public class FiveChessFrame extends JFrame implements MouseListener {
                     int tmpy = 60+j*40;
                     g.setColor(Color.white);
                     g.fillOval(tmpx-15,tmpy-15,30,30);
-
                 }
             }
         }
         g2.drawImage(bi,0,0,this);
     }
+
 
     // 按钮事件
     public class ButtonPress implements ActionListener {
@@ -133,42 +148,50 @@ public class FiveChessFrame extends JFrame implements MouseListener {
             Object obj = e.getSource();  // 按的哪个按钮
             if(obj == undo) {
                 System.out.println("悔棋");
-                this.Undo();
-            } else if(obj == draw) {
-                System.out.println("求和");
-                this.Draw();
+                Undo();
             } else if(obj == concede) {
                 System.out.println("认输");
-                this.Concede();
+                Concede();
             } else if(obj == reopen) {
                 System.out.println("重新开始");
-                this.Reopen();
+                Reopen();
             } else if (obj == quit){
                 System.exit(0);
             }
         }
+    }
 
-        private void Undo() {
-            // 如果没有棋子 或 游戏已经结束
-            if (chessCount==0 || finish == true){
-                return;
-            }
-            // 悔棋
-            int tmpx = allx.pop();
-            int tmpy = ally.pop();
-            chessCount--;
-            allChess[tmpx+1][tmpy+1]=0;
-            repaint();
+    public void Undo() {
+        // 如果没有棋子 或 游戏已经结束
+        if (chessCount==0 || finish == true){
+            return;
         }
+        // 悔棋
+        int tmpx = allx.pop();
+        int tmpy = ally.pop();
+        chessCount--;
+        allChess[tmpx+1][tmpy+1]=0;
+        repaint();
+    }
 
-        private void Draw() {
+    public void Concede() {
+        if (finish == true){
+            return;
         }
-
-        private void Concede() {
-//            int res = JOptionPane.showConfirmDialog(f,"确定认输吗？");
+        // 确认提示
+        int res = JOptionPane.showConfirmDialog(this,"确定认输吗？");
+        if (res==0){
+            finish = true;
+            win = (isBlack==true ? "白 白 白" : "黑 黑 黑");
+            this.repaint();
+            JOptionPane.showMessageDialog(this,"认输，" + win + "方获胜");
         }
+    }
 
-        private void Reopen() {
+    public void Reopen() {
+        // 确认提示
+        int res = JOptionPane.showConfirmDialog(this,"确定重新开始吗？");
+        if (res == 0) {
             // 初始化allChess
             for (int i = 0; i < 21; i++) {
                 for (int j = 0; j < 21; j++) {
@@ -187,8 +210,6 @@ public class FiveChessFrame extends JFrame implements MouseListener {
             repaint();
         }
     }
-
-
 
 
     // 判断是否有五子连珠
@@ -305,7 +326,7 @@ public class FiveChessFrame extends JFrame implements MouseListener {
                 this.repaint();  // 画
 
                 // 判断是否胜利
-                boolean isWin = this.checkWin();
+                boolean isWin = checkWin();
                 if (isWin == true){
                     finish = true;
                     win = (allChess[x+1][y+1]==1 ? "黑 黑 黑" : "白 白 白");
@@ -317,4 +338,3 @@ public class FiveChessFrame extends JFrame implements MouseListener {
     }
 
 }
-
