@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
@@ -39,7 +40,7 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         // 设置各个按钮位置与大小
         undo.setBounds(888,351,140,70);
         concede.setBounds(888,451,140,70);
-        reopen.setBounds(888,551,140,70);
+        reopen.setBounds(888,550,140,70);
         quit.setBounds(888,651,140,70);
         // 设置按钮事件
         undo.addActionListener(new ButtonPress());
@@ -147,13 +148,10 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         public void actionPerformed(ActionEvent e) {
             Object obj = e.getSource();  // 按的哪个按钮
             if(obj == undo) {
-                System.out.println("悔棋");
                 Undo();
             } else if(obj == concede) {
-                System.out.println("认输");
                 Concede();
             } else if(obj == reopen) {
-                System.out.println("重新开始");
                 Reopen();
             } else if (obj == quit){
                 System.exit(0);
@@ -172,6 +170,7 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         chessCount--;
         allChess[tmpx+1][tmpy+1]=0;
         repaint();
+        System.out.println("悔棋");
     }
 
     public void Concede() {
@@ -184,7 +183,9 @@ public class FiveChessFrame extends JFrame implements MouseListener {
             finish = true;
             win = (isBlack==true ? "白 白 白" : "黑 黑 黑");
             this.repaint();
+            System.out.println("认输");
             JOptionPane.showMessageDialog(this,"认输，" + win + "方获胜");
+
         }
     }
 
@@ -208,6 +209,7 @@ public class FiveChessFrame extends JFrame implements MouseListener {
             isBlack = true;
             finish = false;
             repaint();
+            System.out.println("重新开始");
         }
     }
 
@@ -293,9 +295,9 @@ public class FiveChessFrame extends JFrame implements MouseListener {
     @Override  // 鼠标点击操作
     public void mousePressed(MouseEvent e){
         // 打印坐标
-        System.out.println("X->"+e.getX());
-        System.out.println("Y->"+e.getY());
-        System.out.println();
+//        System.out.println("X->"+e.getX());
+//        System.out.println("Y->"+e.getY());
+//        System.out.println();
         // 游戏未结束
         if (finish == false){
             // 获取点击位置坐标
