@@ -1,19 +1,20 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.ImageIO;
 
 public class FiveChessFrame extends JFrame implements MouseListener {
-
     BufferedImage bgimg = null;  // 背景图片
+    BufferedImage bgimgWhite = null;  // 白背景
     int x = -1;  // x、y坐标
     int y = -1;
-    int[][] allChess = new int [19][19];  // 所以棋子，0无棋，1黑棋，2白棋
+    // 19*19棋盘，多两行作为判断， 故后续代码中所有allChess都+1
+    int[][] allChess = new int [21][21];  // 所以棋子，0无棋，1黑棋，2白棋
     boolean isBlack = true;  // 判断现在是黑棋还是白棋下
+    boolean finish = false;  // 判断游戏是否结束
+    String win = "";  // 哪方胜利
 
     public FiveChessFrame() throws IOException {
         this.setSize(1200, 820);  // 窗口大小
@@ -22,26 +23,16 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         this.setResizable(false);  // 不可改变窗口大小
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // 设置关闭功能
         this.setVisible(true);  // 窗口可见
-
         this.addMouseListener(this);  // 设置鼠标监听
 
         // 读取背景图片
-//        try {
-//            bgimg = ImageIO.read(new File("img/bg2.png"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-//        ImageIcon img = new ImageIcon("img/bg2.png");
-//        //要设置的背景图片
-//        JLabel imgLabel = new JLabel(img);
-//        //将背景图放在标签里。
-//        this.getLayeredPane().add(imgLabel);
-//        //将背景标签添加到jfram的LayeredPane面板里。
-//        imgLabel.setBounds(0, 0,1200,820);
-//        // 设置背景标签的位置
-
-
+        try {
+            bgimg = ImageIO.read(new File("img/bg2.png"));
+            bgimgWhite = ImageIO.read(new File("img/bgWhite.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.repaint();
     }
 
     public void paint(Graphics g2){
@@ -49,8 +40,20 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         BufferedImage bi = new BufferedImage(1200,820,BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
 
-        // 背景图片
-//        g.drawImage(bgimg,0,20,this);
+        // 画背景图片
+        g.drawImage(bgimgWhite,0,20,this);
+        g.drawImage(bgimg,0,20,this);
+
+        // 打印提示信息
+        g.setColor(Color.black);
+        g.setFont(new Font("宋体",Font.PLAIN,50));
+        if (finish == true){
+            g.drawString(win+" 胜！",820,300);
+        }else if (isBlack == true){
+            g.drawString("轮 到 黑 方",850,300);
+        } else {
+            g.drawString("轮 到 白 方",850,300);
+        }
 
         // 绘制棋盘
         for (int i = 0; i < 19; i++) {
@@ -70,14 +73,14 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         // 绘制棋子
         for (int i = 0; i < 19; i++) {
             for (int j = 0; j < 19; j++) {
-                if (allChess[i][j]==1){
+                if (allChess[i+1][j+1]==1){
                     // 画黑子
                     int tmpx = 40+i*40;
                     int tmpy = 60+j*40;
                     g.setColor(Color.black);
                     g.fillOval(tmpx-15,tmpy-15,30,30);
 
-                } else if (allChess[i][j]==2){
+                } else if (allChess[i+1][j+1]==2){
                     // 画白子
                     int tmpx = 40+i*40;
                     int tmpy = 60+j*40;
@@ -107,22 +110,109 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         System.out.println("X->"+e.getX());
         System.out.println("Y->"+e.getY());
         System.out.println();
-        x = e.getX();  // 获取点击位置坐标
-        y = e.getY();
-        float fx = x;
-        float fy = y;
-        if (x>=30 && x<= 770 && y>=50 && y<=790){
-            x = Math.round((fx-40)/40);  // 算出离他最近的交叉点
-            y = Math.round((fy-60)/40);
-            if (isBlack == true && allChess[x][y]==0) {
-                allChess[x][y] = 1;  // 下黑子
-                isBlack = false;
-            } else if (isBlack == false && allChess[x][y]==0){
-                allChess[x][y] = 2;  // 下白子
-                isBlack = true;
+        // 游戏未结束
+        if (finish == false){
+            // 获取点击位置坐标
+            x = e.getX();
+            y = e.getY();
+            float fx = x;
+            float fy = y;
+            if (x>=30 && x<= 770 && y>=50 && y<=790){
+                // 算出离他最近的交叉点
+                x = Math.round((fx-40)/40);
+                y = Math.round((fy-60)/40);
+                if (allChess[x+1][y+1]==0){  // 可以下子
+                    if (isBlack == true ) {
+                        allChess[x+1][y+1] = 1;  // 下黑子
+                        isBlack = false;
+                    } else if (isBlack == false ){
+                        allChess[x+1][y+1] = 2;  // 下白子
+                        isBlack = true;
+                    }
+                }
+
+                this.repaint();  // 画
+
+                // 判断是否胜利
+                boolean isWin = this.checkWin();
+                if (isWin == true){
+                    finish = true;
+                    win = (allChess[x+1][y+1]==1 ? "黑 黑 黑" : "白 白 白");
+                    JOptionPane.showMessageDialog(this,"游戏结束，" + win + "方获胜");
+                }
             }
-            this.repaint();  // 画
         }
+
     }
+
+    // 判断是否有五子连珠
+    private boolean checkWin(){
+        boolean flag = false;
+        // 横向
+        int cnt1 = 1;  // 计数连子个数
+        int i1 = 1;
+        // 下的子 右边
+        while (allChess[x+1][y+1] == allChess[x+i1+1][y+1]){
+            i1++;
+            cnt1++;
+        }
+        i1=1;
+        // 下的子 左边
+        while (allChess[x+1][y+1] == allChess[x-i1+1][y+1]){
+            i1++;
+            cnt1++;
+        }
+
+        // 纵向
+        int cnt2 = 1;
+        int i2 = 1;
+        // 下的子 下边
+        while (allChess[x+1][y+1] == allChess[x+1][y+i2+1]){
+            i2++;
+            cnt2++;
+        }
+        i2=1;
+        // 下的子 上边
+        while (allChess[x+1][y+1] == allChess[x+1][y-i2+1]){
+            i2++;
+            cnt2++;
+        }
+
+        // 一三斜向
+        int cnt3 = 1;
+        int i3 = 1;
+        // 下的子 右上边
+        while (allChess[x+1][y+1] == allChess[x-i3+1][y+i3+1]){
+            i3++;
+            cnt3++;
+        }
+        i3=1;
+        // 下的子 左下边
+        while (allChess[x+1][y+1] == allChess[x+i3+1][y-i3+1]){
+            i3++;
+            cnt3++;
+        }
+
+        //二四斜向
+        int cnt4 = 1;
+        int i4 = 1;
+        // 下的子 右下边
+        while (allChess[x+1][y+1] == allChess[x+i4+1][y+i4+1]){
+            i4++;
+            cnt4++;
+        }
+        i4=1;
+        // 下的子 左上边
+        while (allChess[x+1][y+1] == allChess[x-i4+1][y-i4+1]){
+            i4++;
+            cnt4++;
+        }
+
+        if (cnt1>=5 || cnt2>=5 || cnt3>=5 || cnt4>=5){
+            flag = true;
+        }
+        return flag;
+    }
+
 }
 
