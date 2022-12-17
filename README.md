@@ -3,4 +3,4 @@
 <br>
 <br>
 
-to play the game:  went to `./out/artifacts/FiveChess_jar/FiveChess.exe`  
+To play the game:  went to `./out/artifacts/FiveChess_jar/FiveChess.exe`  
