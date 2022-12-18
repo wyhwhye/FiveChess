@@ -3,4 +3,4 @@
 <br>
 <br>
 
-To play the game: &nbsp; go to `./out/artifacts/FiveChess_jar/FiveChess.exe`  
+To play the game: &nbsp; download the  `FiveChess.zip`  
