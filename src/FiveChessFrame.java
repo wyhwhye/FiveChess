@@ -138,6 +138,27 @@ public class FiveChessFrame extends JFrame implements MouseListener {
                 }
             }
         }
+
+        // 绘制现在下的棋子的提示
+        if (!allx.isEmpty()){  // 如果棋盘上有棋子的话
+            int i = allx.peek();  // 取出最新下的棋的坐标
+            int j = ally.peek();
+            if (allChess[i+1][j+1]==1){
+                // 是黑子，画白点
+                int tmpx = 40+i*40;
+                int tmpy = 60+j*40;
+                g.setColor(Color.white);
+                g.fillOval(tmpx-5,tmpy-5,10,10);
+
+            } else if (allChess[i+1][j+1]==2){
+                // 是白子，画黑点
+                int tmpx = 40+i*40;
+                int tmpy = 60+j*40;
+                g.setColor(Color.black);
+                g.fillOval(tmpx-5,tmpy-5,10,10);
+            }
+        }
+
         g2.drawImage(bi,0,0,this);
     }
 
