@@ -22,7 +22,7 @@ public class FiveChessFrame extends JFrame implements MouseListener {
     Stack <Integer> ally = new Stack<Integer>();
     int chessCount = 0;  // 棋子数量
     // 19*19棋盘，多两行作为判断， 故后续代码中所有allChess都+1
-    int[][] allChess = new int [21][21];  // 所以棋子，0无棋，1黑棋，2白棋
+    int[][] allChess = new int [21][21];  // 所有棋子，0无棋，1黑棋，2白棋
     boolean isBlack = true;  // 判断现在是黑棋还是白棋下
     boolean finish = false;  // 判断游戏是否结束
     String win = "";  // 哪方胜利
@@ -41,6 +41,11 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         concede.setBounds(888,451,140,70);
         reopen.setBounds(888,550,140,70);
         quit.setBounds(888,651,140,70);
+        // exe
+//        undo.setBounds(892,354,140,70);
+//        concede.setBounds(892,454,140,70);
+//        reopen.setBounds(892,554,140,70);
+//        quit.setBounds(892,654,140,70);
         // 设置按钮事件
         undo.addActionListener(new ButtonPress());
         concede.addActionListener(new ButtonPress());
@@ -64,14 +69,13 @@ public class FiveChessFrame extends JFrame implements MouseListener {
 
         // 读取背景图片
         try {
-            bgimg = ImageIO.read(new File("img/bg2.png"));
-            bgimgWhite = ImageIO.read(new File("img/bgWhite.png"));
+            bgimg = ImageIO.read(new File("img/bg22.png"));
+            bgimgWhite = ImageIO.read(new File("img/bgWhite1.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
         this.repaint();
     }
-
 
     // 画
     public void paint(Graphics g2){
@@ -84,10 +88,6 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         g.drawImage(bgimg,0,20,this);
 
         // 使按钮显示
-//        undo.requestFocus();
-//        concede.requestFocus();
-//        reopen.requestFocus();
-//        quit.requestFocus();
         undo.repaint();
         concede.repaint();
         reopen.repaint();
@@ -143,20 +143,10 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         if (!allx.isEmpty()){  // 如果棋盘上有棋子的话
             int i = allx.peek();  // 取出最新下的棋的坐标
             int j = ally.peek();
-            if (allChess[i+1][j+1]==1){
-                // 是黑子，画白点
-                int tmpx = 40+i*40;
-                int tmpy = 60+j*40;
-                g.setColor(Color.white);
-                g.fillOval(tmpx-5,tmpy-5,10,10);
-
-            } else if (allChess[i+1][j+1]==2){
-                // 是白子，画黑点
-                int tmpx = 40+i*40;
-                int tmpy = 60+j*40;
-                g.setColor(Color.black);
-                g.fillOval(tmpx-5,tmpy-5,10,10);
-            }
+            int tmpx = 40+i*40;  // 计算绘制位置
+            int tmpy = 60+j*40;
+            g.setColor(Color.red);
+            g.fillOval(tmpx-5,tmpy-5,10,10);
         }
 
         g2.drawImage(bi,0,0,this);

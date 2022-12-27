@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <exe4j version="8.0.1" transformSequenceNumber="3">
-  <directoryPresets config="D:/Programming/java/FiveChess/out/artifacts/FiveChess_jar/img" />
+  <directoryPresets config="D:/Programming/java/FiveChess/out/artifacts/FiveChess_jar" />
   <application name="五子棋" distributionSourceDir="D:/Programming/java/FiveChess/out/artifacts/FiveChess_jar" />
-  <executable name="五子棋" wrapperType="embed" iconFile="D:/Programming/java/FiveChess/out/artifacts/FiveChess_jar/img/4.ico" redirectStderr="false" executableMode="console" />
+  <executable name="五子棋" wrapperType="embed" iconFile="D:/Programming/java/FiveChess/out/artifacts/FiveChess_jar/img/4.ico" executableDir="." redirectStderr="false" executableMode="console" />
   <java mainClass="FiveChess" minVersion="1.7" allowBetaVM="true">
     <searchSequence>
       <directory location="./jre" />
