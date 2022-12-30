@@ -178,6 +178,11 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         int tmpx = allx.pop();
         int tmpy = ally.pop();
         chessCount--;
+        if (allChess[tmpx+1][tmpy+1]==1){
+            isBlack = true;
+        } else {
+            isBlack = false;
+        }
         allChess[tmpx+1][tmpy+1]=0;
         repaint();
         System.out.println("悔棋");
