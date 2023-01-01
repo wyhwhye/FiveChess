@@ -354,5 +354,4 @@ public class FiveChessFrame extends JFrame implements MouseListener {
         }
 
     }
-
 }
