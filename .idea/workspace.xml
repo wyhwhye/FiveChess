@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="FiveChess:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ebe269fb-837d-4afa-b8e6-0a3c35593ab6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/out/artifacts/FiveChess_jar/FiveChess.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/FiveChess_jar/FiveChess.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FiveChessFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FiveChessFrame.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="ExportToHTMLSettings">
+    <option name="printScope" value="4" />
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/exportToHTML" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="2Iq4It6rjDPYJEuccLdqSbJqFIy" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Programming\java\FiveChess\src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Programming\java\FiveChess\out\artifacts\FiveChess_jar" />
+      <recent name="D:\Programming\java\FiveChess\out\production\FiveChess" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="FiveChess" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="FiveChess" />
+      <module name="FiveChess" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.FiveChess" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ebe269fb-837d-4afa-b8e6-0a3c35593ab6" name="Default Changelist" comment="" />
+      <created>1670895704859</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1670895704859</updated>
+      <workItem from="1670895706298" duration="1563000" />
+      <workItem from="1671004396650" duration="9202000" />
+      <workItem from="1671106205200" duration="10370000" />
+      <workItem from="1671119334174" duration="268000" />
+      <workItem from="1671119685709" duration="34000" />
+      <workItem from="1671165678278" duration="23352000" />
+      <workItem from="1671193229001" duration="1145000" />
+      <workItem from="1671283918981" duration="1782000" />
+      <workItem from="1671292521896" duration="499000" />
+      <workItem from="1671937040194" duration="1936000" />
+      <workItem from="1672109492047" duration="1219000" />
+      <workItem from="1672110833202" duration="5967000" />
+      <workItem from="1672370373615" duration="622000" />
+      <workItem from="1672371026643" duration="3512000" />
+      <workItem from="1672390849385" duration="1263000" />
+      <workItem from="1672460465387" duration="207000" />
+      <workItem from="1672574289627" duration="2126000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>

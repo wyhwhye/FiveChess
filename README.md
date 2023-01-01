@@ -3,4 +3,4 @@
 <br>
 <br>
 
-To play the game: &nbsp; download the  `FiveChess.zip`  
+To play the game: &nbsp; download the  `五子棋.zip`  
